@@ -7,10 +7,10 @@ use Slim\Exception\HttpNotFoundException;
 use Slim\Factory\AppFactory;
 use Symfony\Component\Dotenv\Dotenv;
 
-require '../vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 $dotenv = new Dotenv();
-$dotenv->load(__DIR__ . '/../.env');
+$dotenv->load(__DIR__.'/../.env');
 
 $container = new Container([
     'entity' => function() : EntityManager {
@@ -52,6 +52,7 @@ $app->add(function ($request, $handler) {
 
 $app->map(['GET'], '/health-check', App\Controller\HealthCheck::class);
 $app->map(['GET'], '/all', App\Controller\ProductController::class);
+$app->map(['POST'], '/add', App\Controller\AddProductController::class);
 
 //$app->map(['GET'], '[/[{slug}]]', App\Controller\Category\CategoryAction::class);
 //$app->map(['GET'], '/{slug}/sub', App\Controller\Category\CategoryAction::class);
