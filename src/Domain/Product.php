@@ -19,6 +19,9 @@ class Product {
     #[Column(name: 'slug', type: 'string')]
     public string $slug;
 
+    #[Column(name: 'sku', type: 'string')]
+    public string $sku;
+
     #[Column(name: 'list_price', type: 'decimal', precision: 2, scale: 10)]
     public float $listPrice;
 
@@ -53,6 +56,14 @@ class Product {
 
     public function setSlug(string $slug): void {
         $this->slug = $slug;
+    }
+
+    public function getSku(): string {
+        return $this->sku;
+    }
+
+    public function setSku(string $sku): void {
+        $this->sku = $sku;
     }
 
     public function getListPrice() : float {
