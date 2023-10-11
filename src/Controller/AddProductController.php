@@ -33,6 +33,16 @@ class AddProductController {
      */
     function __invoke(Request $request, Response $response, array $args): Response {
         $data = json_decode(json_decode($request->getBody()));
+        $product = $this->em->getRepository(Product::class)->findOneBy([
+            'sku' => $data->sku
+        ]);
+        if ($product) {
+            $response->getBody()->write(json_encode([
+                'success' => false,
+                'message' => "Integrity constraint violation: Duplicate SKU ($data->sku) for $data->name and $product->name."
+            ]));
+            return $response->withStatus(201);
+        }
         $product = new Product();
         $product->setId(Uuid::uuid4());
         $product->setName($data->name);
@@ -48,6 +58,10 @@ class AddProductController {
         $product->setWeight(floatval($data->weight));
         $this->em->persist($product);
         $this->em->flush();
+        $response->getBody()->write(json_encode([
+            'success' => true,
+            'message' => "$data->name / $data->sku was just added."
+        ]));
         return $response->withStatus(201);
     }
 }
